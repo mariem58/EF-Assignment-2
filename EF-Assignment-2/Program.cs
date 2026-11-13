@@ -6,7 +6,7 @@ namespace EF_Assignment_2
     {
         static void Main(string[] args)
         {
-            EventHubDbContext eventHubDbContext = new EventHubDbContext();
+            using EventHubDbContext eventHubDbContext = new EventHubDbContext();
         }
     }
 }

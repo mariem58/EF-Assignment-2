@@ -33,5 +33,8 @@ namespace EF_Assignment_2.Models
 
         [NotMapped]
         public string FullAddress => $"{Street}, {City}, {Country}, {PostalCode}";
+
+        public int BadgeId { get; set; }
+        public Badge Badge { get; set; } = null!;
     }
 }

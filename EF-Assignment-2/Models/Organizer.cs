@@ -19,5 +19,8 @@ namespace EF_Assignment_2.Models
         public string? CompanyName { get; set; }
         public bool IsVerified { get; set; }
 
+        // Navigation Properties
+        public OrganizerProfile Profile { get; set; }
+
     }
 }
