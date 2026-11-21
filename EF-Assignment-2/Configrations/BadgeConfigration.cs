@@ -1,9 +1,7 @@
-﻿using EF_Assignment_2.Models;
+﻿
+using EF_Assignment_2.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace EF_Assignment_2.Configrations
 {
@@ -11,7 +9,15 @@ namespace EF_Assignment_2.Configrations
     {
         public void Configure(EntityTypeBuilder<Badge> builder)
         {
-            throw new NotImplementedException();
+            builder.HasKey(b => b.BadgeNumber);
+
+            builder.Property(b => b.Tier)
+                   .HasConversion<string>();
+
+            builder.HasOne(b => b.Attendee)
+                   .WithOne(a => a.Badge)
+                   .HasForeignKey<Badge>(b => b.AttendeeId)
+                   .IsRequired();
         }
     }
 }

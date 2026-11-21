@@ -1,34 +1,32 @@
-﻿using EF_Assignment_2.Models;
+﻿
+using EF_Assignment_2.Configrations;
+using EF_Assignment_2.Models;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace EF_Assignment_2.Context
 {
-    internal class EventHubDbContext:DbContext
+    internal class EventHubDbContext : DbContext
     {
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        public DbSet<Organizer> Organizers { get; set; }
+        public DbSet<OrganizerProfile> OrganizerProfiles { get; set; }
+        public DbSet<Event> Events { get; set; }
+        public DbSet<Attendee> Attendees { get; set; }
+        public DbSet<Badge> Badges { get; set; }
+
+        protected override void OnConfiguring(
+            DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseSqlServer("Server=.;Database=EventHub;Integrated Security=True;TrustServerCertificate=True;");
+            optionsBuilder.UseSqlServer(
+                "Server=.;Database=EventHub;Integrated Security=True;TrustServerCertificate=True;");
         }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<OrganizerProfile>().ToTable("OrganizerProfiles");
-            modelBuilder.Entity<OrganizerProfile>().HasKey(o => o.OrganizerProfileId);
-            modelBuilder.Entity<OrganizerProfile>().Property(o => o.OrganizerProfileId)
-                .UseIdentityColumn(10, 10);
+            modelBuilder.ApplyConfiguration(new OrganizerProfileConfigration());
+            modelBuilder.ApplyConfiguration(new EventConfigration());
+            modelBuilder.ApplyConfiguration(new BadgeConfigration());
 
-            modelBuilder.Entity<OrganizerProfile>().Property(o => o.Biography)
-                .HasColumnName("OrganizerBiography")
-                .HasColumnType("varchar")
-                .HasMaxLength(50)
-                .IsRequired();
-
-
-
-              
-
+            base.OnModelCreating(modelBuilder);
         }
     }
 }

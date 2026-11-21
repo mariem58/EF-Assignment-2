@@ -1,16 +1,28 @@
-﻿using EF_Assignment_2.Models;
+﻿
+using EF_Assignment_2.Models;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Text;
+using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace EF_Assignment_2.Configrations
 {
     internal class OrganizerProfileConfigration : IEntityTypeConfiguration<OrganizerProfile>
     {
-        public void Configure(Microsoft.EntityFrameworkCore.Metadata.Builders.EntityTypeBuilder<OrganizerProfile> builder)
+        public void Configure(EntityTypeBuilder<OrganizerProfile> builder)
         {
-            throw new NotImplementedException();
+            builder.HasKey(p => p.OrganizerProfileId);
+
+            builder.Property(p => p.OrganizerProfileId)
+                   .UseIdentityColumn(10, 10);
+
+            builder.Property(p => p.Biography)
+                   .HasColumnName("OrganizerBiography")
+                   .HasColumnType("varchar")
+                   .HasMaxLength(500);
+
+            builder.HasOne(p => p.Organizer)
+                   .WithOne(o => o.Profile)
+                   .HasForeignKey<OrganizerProfile>(p => p.OrganizerId)
+                   .IsRequired();
         }
     }
 }
